@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import CreateView
+from django.views.generic import ListView
 from .models import Blog
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
@@ -18,4 +19,8 @@ class AddBlog(LoginRequiredMixin, CreateView) :
         form.instance.created_on = datetime.now()
         form.instance.rating = 0
         return super(AddBlog, self).form_valid(form)
+
+class ViewAll(ListView) :
+    template_name = 'blog/view_all_blogs.html'
+    model = Blog
 
