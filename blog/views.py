@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import CreateView
 from django.views.generic import ListView
+from django.views.generic import DetailView
 from .models import Blog
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
@@ -24,3 +25,9 @@ class ViewAll(ListView) :
     template_name = 'blog/view_all_blogs.html'
     model = Blog
 
+class DetailBlog(DetailView) :
+    template_name = 'blog/view_single_blog.html'
+
+    def get_queryset(self, **kwargs):
+        queryset = Blog.objects.filter(pk=self.kwargs['pk'])
+        return queryset

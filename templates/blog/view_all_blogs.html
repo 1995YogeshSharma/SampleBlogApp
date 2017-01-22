@@ -24,7 +24,7 @@
                             <p class="text-info">rating - {{ obj.rating }}</p>
                         </div>
                         <div class="text-right col-md-4">
-                            <a class="text-info" href="#">read complete blog</a>
+                            <a class="text-info" href="{% url 'single_blog' obj.id %}">read complete blog</a>
                         </div>
                     </div>
                     <hr>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+    <div class="container">
+    <div class="row">
+        <div class="page-header bg-info">
+            <h2 class="text-center text-capitalize">{{object.title}}</h2>
+        </div>
+        </div>
+        <div class="row">
+        <div class="row page-body col-md-offset-1 col-md-10">
+                <pre class="text-justify breadcrumb">
+                    {{ object.content }}
+                </pre>
+        </div>
+            </div>
+        <div class="row">
+        <div class="row page-footer bg-info">
+            <p class="text-left "><u>created on</u> - {{ object.created_on }}</p>
+        </div>
+            </div>
+
+    </div>
+{% endblock contents %}
