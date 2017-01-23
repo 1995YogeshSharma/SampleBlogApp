@@ -31,3 +31,11 @@ class DetailBlog(DetailView) :
     def get_queryset(self, **kwargs):
         queryset = Blog.objects.filter(pk=self.kwargs['pk'])
         return queryset
+
+class AuthorBlog(LoginRequiredMixin, ListView) :
+    template_name = 'blog/view_author_blogs.html'
+    login_url = '/home/login'
+    redirect_field_name = ''
+    def get_queryset(self, **kwargs):
+        queryset = Blog.objects.filter(author=self.request.user.id)
+        return queryset
