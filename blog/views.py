@@ -2,7 +2,11 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import DetailView
+
+from django.db.models import Avg
+
 from .models import Blog
+from .models import Rating
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 # Create your views here.
@@ -22,8 +26,10 @@ class AddBlog(LoginRequiredMixin, CreateView) :
         return super(AddBlog, self).form_valid(form)
 
 class ViewAll(ListView) :
+    # rating to be passed also in this view
     template_name = 'blog/view_all_blogs.html'
     model = Blog
+
 
 class DetailBlog(DetailView) :
     template_name = 'blog/view_single_blog.html'
@@ -31,6 +37,14 @@ class DetailBlog(DetailView) :
     def get_queryset(self, **kwargs):
         queryset = Blog.objects.filter(pk=self.kwargs['pk'])
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailBlog, self).get_context_data(**kwargs)
+        obj = Blog.objects.get(pk=self.kwargs['pk'])
+        rating = Rating.objects.filter(blog_name__title=obj.title)
+        context['rating'] = rating.aggregate(Avg('rating'))
+        return context
+    
 
 class AuthorBlog(LoginRequiredMixin, ListView) :
     template_name = 'blog/view_author_blogs.html'
