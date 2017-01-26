@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'^view_all/$', ViewAll.as_view(), name='view_all'),
     url(r'^view_one/(?P<pk>\d+)', DetailBlog.as_view(), name='single_blog'),
     url(r'^author_blogs/$', AuthorBlog.as_view(), name='author_blog'),
+    url(r'^(?P<pk>\d+)/rate_blog/$', RateBlog, name='rate_blog'),
 ]

@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from django.shortcuts import HttpResponse
+
+from django.contrib.auth.decorators import login_required
 
 from django.db.models import Avg
 
@@ -44,12 +47,30 @@ class DetailBlog(DetailView) :
         rating = Rating.objects.filter(blog_name__title=obj.title)
         context['rating'] = rating.aggregate(Avg('rating'))
         return context
-    
+
 
 class AuthorBlog(LoginRequiredMixin, ListView) :
     template_name = 'blog/view_author_blogs.html'
     login_url = '/home/login'
     redirect_field_name = ''
+
     def get_queryset(self, **kwargs):
         queryset = Blog.objects.filter(author=self.request.user.id)
         return queryset
+
+@login_required
+def RateBlog(request, pk):
+    blog = Blog.objects.get(pk=pk)
+
+    #checking if already rated
+    if Rating.objects.filter(blog_name=blog, rated_by_id=request.user.id).exists() :
+        return HttpResponse('already rated')
+
+    print request.GET.get('rating', False)
+
+    new_rating = Rating.objects.create(blog_name=blog, rated_by_id=request.user.id, rating=int(request.GET.get('rating', False)))
+
+    new_rating.save()
+
+    return HttpResponse('ratings added')
+

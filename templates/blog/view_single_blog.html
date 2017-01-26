@@ -15,11 +15,44 @@
         </div>
             </div>
         <div class="row">
-        <div class="row page-footer bg-info">
-            <p class="text-left "><u>created on</u> - {{ object.created_on }}</p>
-            <p class="text-center "><u>Rating</u> - {{ rating.rating__avg }}</p>
+            <div class="row page-footer bg-info">
+                <p class="text-left "><u>created on</u> - {{ object.created_on }}</p>
+                <p class="text-center "><u>Rating</u> - {{ rating.rating__avg }}</p>
+            </div>
         </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal">
+                <input type="radio" name="rating" value="1" />1
+                <input type="radio" name="rating" value="2" />2
+                <input type="radio" name="rating" value="3" />3
+                <input type="radio" name="rating" value="4" />4
+                <input type="radio" name="rating" value="5" />5
+                <input type="button" id="submitButton" value="rate now" />
+            </form>
         </div>
-
+        <p id="result" > </p>
     </div>
 {% endblock contents %}
+
+{% block customScript %}
+
+    $('#submitButton').click(function() {
+        var radioVal = $('input[type=radio]:checked').val();
+        var url = '/blog/' + {{ object.id }} + '/rate_blog/' ;
+        $.ajax({
+            url : url,
+            data : {
+                'rating' : radioVal,
+            },
+            dataType : 'text',
+            success : function(data) {
+                alert(data);
+                $('#result').text(data);
+                console.log('what the hell is this');
+            }
+        });
+    });
+
+{% endblock customScript%}
