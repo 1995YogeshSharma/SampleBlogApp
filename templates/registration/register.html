@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block contents %}
-    <h1> Register Page </h1>
-
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Register" />
-    </form>
+    <div class="container ">
+    <div class="form-class text-center center-block" style="margin-top:10%; width:50%">
+        <form action="" method="POST" class="form-horizontal">
+            {% csrf_token %}
+            {% for item in form %}
+                <div class="form-group">
+                    <div class="col-md-6">{{ item.label_tag }}</div>
+                    <div class="col-md-6">{{ item }}</div>
+                </div>
+            {% endfor %}
+            <input type="submit" value="Register" />
+        </form>
+    </div>
+    </div>
 {% endblock contents %}
