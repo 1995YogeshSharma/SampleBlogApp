@@ -1,20 +1,22 @@
-from django.shortcuts import render
-from django.views.generic import CreateView
-from django.views.generic import ListView
-from django.views.generic import DetailView
+from django.views.generic import CreateView, ListView, DetailView
+
 from django.shortcuts import HttpResponse
 
 from django.contrib.auth.decorators import login_required
 
 from django.db.models import Avg
 
-from .models import Blog
-from .models import Rating
-from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import datetime
-# Create your views here.
+from .models import Blog, Rating
 
-class AddBlog(LoginRequiredMixin, CreateView) :
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from datetime import datetime
+
+
+class AddBlog(LoginRequiredMixin, CreateView):
+    """
+    allowed logged in user to add a blog
+    """
     login_url = '/home/login'
     redirect_field_name = ''
     model = Blog
@@ -28,13 +30,19 @@ class AddBlog(LoginRequiredMixin, CreateView) :
         form.instance.rating = 0
         return super(AddBlog, self).form_valid(form)
 
+
 class ViewAll(ListView) :
-    # rating to be passed also in this view
+    """
+    allows user to browse through all the blogs
+    """
     template_name = 'blog/view_all_blogs.html'
     model = Blog
 
 
 class DetailBlog(DetailView) :
+    """
+    allows user to view single blog
+    """
     template_name = 'blog/view_single_blog.html'
 
     def get_queryset(self, **kwargs):
@@ -50,6 +58,9 @@ class DetailBlog(DetailView) :
 
 
 class AuthorBlog(LoginRequiredMixin, ListView) :
+    """
+    allows user to view his blogs
+    """
     template_name = 'blog/view_author_blogs.html'
     login_url = '/home/login'
     redirect_field_name = ''
@@ -58,8 +69,12 @@ class AuthorBlog(LoginRequiredMixin, ListView) :
         queryset = Blog.objects.filter(author=self.request.user.id)
         return queryset
 
+
 @login_required
 def RateBlog(request, pk):
+    """
+    allows logged in user to rate a blog ( responds to ajax call by the user )
+    """
     blog = Blog.objects.get(pk=pk)
 
     #checking if already rated

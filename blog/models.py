@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Blog(models.Model):
+    """
+    model to store the details about the blogs
+    """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     content = models.TextField()
@@ -15,6 +18,9 @@ class Blog(models.Model):
 
 
 class Rating(models.Model):
+    """
+    model to store the ratings given by users
+    """
     blog_name = models.ForeignKey(Blog, on_delete=models.CASCADE)
     rated_by_id = models.IntegerField()
     rating = models.IntegerField(choices=((1,1),(2,2),(3,3),(4,4),(5,5)), default=0)
