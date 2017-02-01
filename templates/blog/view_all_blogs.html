@@ -16,9 +16,11 @@
                     </div>
                 </div >
                 <div class="panel-body">
-                    <p>
-                        {{ obj.content }}
-                    </p>
+                    <div class="">
+                        {{ obj.content| safe }}
+
+                    </div>
+
                     <div class="row">
                         <div class="text-left col-md-8">
                             <p class="text-info">rating - {{ obj.rating }}</p>

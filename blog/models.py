@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from tinymce import models as tinymce_models
 
 # Create your models here.
 class Blog(models.Model):
@@ -10,7 +11,7 @@ class Blog(models.Model):
     """
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
-    content = models.TextField()
+    content = tinymce_models.HTMLField()
     created_on = models.DateTimeField()
 
     def __str__(self):

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block addScripts %}
+    {{ form.media }}
+{% endblock addScripts %}
+
 {% block contents %}
     <div class="container">
     <div class="form-class text-center " style="margin-top:10%; width:50%">
