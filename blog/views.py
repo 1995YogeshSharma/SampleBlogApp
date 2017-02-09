@@ -36,7 +36,25 @@ class ViewAll(ListView) :
     allows user to browse through all the blogs
     """
     template_name = 'blog/view_all_blogs.html'
-    model = Blog
+   # model = Blog
+
+    def get_queryset(self):
+        queryset = Blog.objects.all()
+
+        for i in queryset :
+            splt_content_list = i.content.split('\r\n')
+            ret = ""
+            for j in splt_content_list:
+                ret = ret + j
+                if len(ret) > 300:
+                    break
+            print "*"
+            print ret
+            print "$"
+            i.content = ret
+
+        return queryset
+
 
 
 class DetailBlog(DetailView) :
@@ -61,7 +79,7 @@ class AuthorBlog(LoginRequiredMixin, ListView) :
     """
     allows user to view his blogs
     """
-    template_name = 'blog/view_author_blogs.html'
+    template_name = 'blog/view_all_blogs.html'
     login_url = '/home/login'
     redirect_field_name = ''
 
